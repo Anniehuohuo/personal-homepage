@@ -1,0 +1,165 @@
+/* 雪花特效容器 */
+.snowflake-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 允许鼠标事件穿透 */
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* 单个雪花粒子 */
+.snowflake {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: snowflakeFall var(--duration, 2s) ease-out forwards;
+  z-index: 1001;
+}
+
+/* 雪花形状容器 */
+.snowflake-shape {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: snowflakeRotate var(--duration, 2s) linear infinite;
+}
+
+/* 雪花线条基础样式 */
+.snowflake-line {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 1px;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+/* 第一条线 - 垂直 */
+.snowflake-line-1 {
+  width: 1px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+/* 第二条线 - 45度角 */
+.snowflake-line-2 {
+  width: 1px;
+  height: 70%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* 第三条线 - -45度角 */
+.snowflake-line-3 {
+  width: 1px;
+  height: 70%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 雪花飘落动画 */
+@keyframes snowflakeFall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(36deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + cos(var(--angle, 0deg)) * var(--distance, 100px)),
+      calc(-50% + sin(var(--angle, 0deg)) * var(--distance, 100px))
+    ) scale(0.3) rotate(360deg);
+  }
+}
+
+/* 雪花自转动画 */
+@keyframes snowflakeRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 不同大小的雪花样式变化 */
+.snowflake[style*="width: 2"] .snowflake-line,
+.snowflake[style*="width: 3"] .snowflake-line {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.snowflake[style*="width: 6"] .snowflake-line,
+.snowflake[style*="width: 7"] .snowflake-line,
+.snowflake[style*="width: 8"] .snowflake-line {
+  background: rgba(0, 0, 0, 0.8);
+  width: 1.5px;
+}
+
+/* 鼠标悬停时的容器样式 */
+.snowflake-container:hover {
+  cursor: none; /* 隐藏默认鼠标指针 */
+}
+
+/* 自定义鼠标指针 */
+.snowflake-container::before {
+  content: '';
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .snowflake {
+    animation-duration: 1.5s;
+  }
+  
+  .snowflake-line {
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* 性能优化 - 减少动画复杂度 */
+@media (prefers-reduced-motion: reduce) {
+  .snowflake {
+    animation: snowflakeSimpleFall var(--duration, 2s) ease-out forwards;
+  }
+  
+  .snowflake-shape {
+    animation: none;
+  }
+}
+
+/* 简化版雪花动画（用于性能优化） */
+@keyframes snowflakeSimpleFall {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 50px)) scale(0.5);
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .snowflake-line {
+    background: rgba(0, 0, 0, 1);
+  }
+}

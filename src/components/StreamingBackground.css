@@ -1,0 +1,153 @@
+/* 流光背景动效样式 */
+.streaming-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #0c0c0c 100%);
+}
+
+/* 流光层基础样式 */
+.stream-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  opacity: 0.6;
+  mix-blend-mode: screen;
+}
+
+/* 第一层流光 - 蓝紫色渐变 */
+.stream-layer-1 {
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(99, 102, 241, 0.1) 50%,
+    rgba(139, 92, 246, 0.1) 70%,
+    transparent 90%
+  );
+  animation: streamFlow1 15s ease-in-out infinite;
+}
+
+/* 第二层流光 - 青色渐变 */
+.stream-layer-2 {
+  background: linear-gradient(
+    -45deg,
+    transparent 20%,
+    rgba(6, 182, 212, 0.08) 40%,
+    rgba(34, 197, 94, 0.08) 60%,
+    transparent 80%
+  );
+  animation: streamFlow2 20s ease-in-out infinite reverse;
+}
+
+/* 第三层流光 - 紫粉色渐变 */
+.stream-layer-3 {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(168, 85, 247, 0.06) 45%,
+    rgba(236, 72, 153, 0.06) 65%,
+    transparent 85%
+  );
+  animation: streamFlow3 25s ease-in-out infinite;
+}
+
+/* 流光动画关键帧 */
+@keyframes streamFlow1 {
+  0%, 100% {
+    transform: translateX(-100%) translateY(-100%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(0%) translateY(0%) rotate(180deg);
+  }
+}
+
+@keyframes streamFlow2 {
+  0%, 100% {
+    transform: translateX(100%) translateY(100%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-50%) rotate(-180deg);
+  }
+}
+
+@keyframes streamFlow3 {
+  0%, 100% {
+    transform: translateX(-50%) translateY(50%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(50%) translateY(-50%) rotate(90deg);
+  }
+}
+
+/* 粒子容器 */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* 单个粒子样式 */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: particleFloat var(--duration, 10s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* 粒子浮动动画 */
+@keyframes particleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0px) scale(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(-100vh) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) scale(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .stream-layer {
+    width: 300%;
+    height: 300%;
+    top: -100%;
+    left: -100%;
+  }
+  
+  .particle {
+    width: 1px;
+    height: 1px;
+  }
+}
+
+/* 减少动画效果（用户偏好设置） */
+@media (prefers-reduced-motion: reduce) {
+  .stream-layer {
+    animation: none;
+  }
+  
+  .particle {
+    animation: none;
+    opacity: 0.1;
+  }
+}
